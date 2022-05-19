@@ -1,4 +1,4 @@
-var Task = require('../models/task');
+const Task = require('../models/task');
 
 exports.ListAll = async function (user_id) {
     const task = await Task.find({ author: user_id })

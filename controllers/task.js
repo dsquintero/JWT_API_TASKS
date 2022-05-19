@@ -52,7 +52,7 @@ exports.Create = async function (req, res) {
         }
         const task = await TaskService.Create(new_task)
 
-        return res.status(200).json(task);
+        return res.status(201).json(task);
 
     } catch (err) {
         console.log(err);
@@ -105,7 +105,7 @@ exports.Delete = async function (req, res) {
             message: 'Document not found'
           })
 
-        return res.status(200).send();
+        return res.status(204).send();
 
     } catch (err) {
         console.log(err);
