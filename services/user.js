@@ -1,5 +1,3 @@
-require("../config/database").connect();
-
 const jwt = require("jsonwebtoken");
 const config = require('../config');
 const { jwtSecret } = config;
@@ -24,7 +22,7 @@ exports.create_user = async function (first_name, last_name, email, password) {
 }
 exports.generate_jwt = async (user) => {
     return jwt.sign(
-        { user_id: user._id, email, first_name: user.first_name, last_name: user.last_name },
+        { user_id: user._id, email: user.email, first_name: user.first_name, last_name: user.last_name },
         jwtSecret,
         {
             expiresIn: "1h",
