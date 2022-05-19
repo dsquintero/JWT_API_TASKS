@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
-// const express = require('express');
+const validator = require('validator');
+
 // Cargamos el servicio
 const UserService = require('../services/user');
 
@@ -10,9 +11,12 @@ exports.register = async function (req, res) {
         // Get user input
         const { first_name, last_name, email, password } = req.body;
 
+        if(!validator.isEmail(email))
+            return res.status(400).send("email no valid");
+            
         // Validate user input
         if (!(email && password && first_name && last_name)) {
-            return res.status(400).send("All input is required");
+            return res.status(400).send("email,password,first_name,last_name required");
         }
 
         // check if user already exist
@@ -49,7 +53,7 @@ exports.login = async function (req, res) {
 
         // Validate user input
         if (!(email && password)) {
-            return res.status(400).send("All input is required");
+            return res.status(400).send("email,password required");
         }
         // Validate if user exist in our database
         const user = await UserService.search_user_by_email(email);
@@ -61,8 +65,14 @@ exports.login = async function (req, res) {
             // save user token
             user.token = token;
 
-            // user
-            return res.status(200).json(user);
+            // user          
+            return res.status(200).json(new Object({
+                _id: user._id,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: user.email,
+                token: user.token,
+            }));
         }
         return res.status(400).send("Invalid Credentials");
     } catch (err) {
