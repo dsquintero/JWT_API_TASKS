@@ -8,7 +8,7 @@ exports.ListAll = async function (user_id) {
                 path: 'author',
                 select: 'first_name last_name'
             })
-        .sort({ createdAt: 'desc'});
+        .sort({ createdAt: 'desc' });
     return task;
 }
 
@@ -31,7 +31,22 @@ exports.Create = async function (new_task) {
                 path: 'author',
                 select: 'first_name last_name'
             });
-    return task;
+    return new Object(
+        {
+            _id: task._id,
+            title: task.title,
+            description: task.description,
+            author:
+            {
+                _id: task.author._id,
+                first_name: task.author.first_name,
+                last_name: task.author.last_name,
+            },
+            complete: task.complete,
+            createdAt: task.createdAt
+        }
+    );
+    //return task;
 }
 
 exports.Update = async function (user_id, task_id, new_task) {
