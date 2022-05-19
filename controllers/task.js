@@ -4,9 +4,14 @@ exports.ListAll = async function (req, res) {
     try {
         const { user_id } = req.user;
         const task = await TaskService.ListAll(user_id)
+
         return res.status(200).json(task);
     } catch (err) {
         console.log(err);
+        return res.status(500).json({
+            statusCode: 500,
+            data: err
+          })
     }
 }
 exports.SearchById = async function (req, res) {
@@ -20,9 +25,14 @@ exports.SearchById = async function (req, res) {
             statusCode: 404,
             message: 'Document not found'
           })
+
         return res.status(200).json(task);
     } catch (err) {
         console.log(err);
+        return res.status(500).json({
+            statusCode: 500,
+            data: err
+          })
     }
 }
 exports.Create = async function (req, res) {
@@ -31,7 +41,7 @@ exports.Create = async function (req, res) {
         const { user_id } = req.user;
 
         if (!(title && description)) {
-            return res.status(400).send("All input is required");
+            return res.status(400).send("title,description required");
         }
 
         const new_task =
@@ -46,6 +56,10 @@ exports.Create = async function (req, res) {
 
     } catch (err) {
         console.log(err);
+        return res.status(500).json({
+            statusCode: 500,
+            data: err
+          })
     }
 
 }
@@ -64,10 +78,19 @@ exports.Update = async function (req, res) {
         
         const task = await TaskService.Update(user_id,task_id,update_task)
 
+        if(!task) return res.status(404).json({
+            statusCode: 404,
+            message: 'Document not found'
+          })
+
         return res.status(200).json(task);
         
     } catch (err) {
         console.log(err);
+        return res.status(500).json({
+            statusCode: 500,
+            data: err
+          })
     }
 }
 exports.Delete = async function (req, res) { 
@@ -76,9 +99,19 @@ exports.Delete = async function (req, res) {
         const { user_id } = req.user;
         const task_id = req.params.id;
         const task = await TaskService.Delete(user_id,task_id)
-        return res.status(200).json(task);
+
+        if(!task) return res.status(404).json({
+            statusCode: 404,
+            message: 'Document not found'
+          })
+
+        return res.status(200).send();
 
     } catch (err) {
         console.log(err);
+        return res.status(500).json({
+            statusCode: 500,
+            data: err
+          })
     }
 }
