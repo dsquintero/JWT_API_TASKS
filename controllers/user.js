@@ -1,7 +1,4 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const config = require('../config');
-const { jwtSecret } = config;
 // const express = require('express');
 // Cargamos el servicio
 const UserService = require('../services/user');
@@ -74,5 +71,5 @@ exports.login = async function (req, res) {
 }
 
 exports.welcome = async function (req, res) {
-    res.status(200).send(`Welcome ${req.user.first_name} 🙌`);
+    return res.status(200).send(`Welcome ${req.user.first_name} 🙌`);
 }
