@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   status: { type: Boolean, default: true },
   createdAt: { type: Date, default: new Date() },
   updatedAt: { type: Date, default: new Date() },
-  token: { type: String },
+  token: { type: String }
 });
 
 module.exports = mongoose.model("user", userSchema);

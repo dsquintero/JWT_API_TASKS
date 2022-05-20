@@ -11,7 +11,7 @@ exports.ListAll = async function (req, res) {
         return res.status(500).json({
             statusCode: 500,
             data: err
-          })
+        })
     }
 }
 exports.SearchById = async function (req, res) {
@@ -21,10 +21,10 @@ exports.SearchById = async function (req, res) {
 
         const task = await TaskService.SearchById(user_id, task_id)
 
-        if(!task) return res.status(404).json({
+        if (!task) return res.status(404).json({
             statusCode: 404,
             message: 'Document not found'
-          })
+        })
 
         return res.status(200).json(task);
     } catch (err) {
@@ -32,7 +32,7 @@ exports.SearchById = async function (req, res) {
         return res.status(500).json({
             statusCode: 500,
             data: err
-          })
+        })
     }
 }
 exports.Create = async function (req, res) {
@@ -48,7 +48,9 @@ exports.Create = async function (req, res) {
         {
             title: title,
             description: description,
-            author: user_id
+            author: user_id,
+            createdAt: new Date(),
+            updatedAt: new Date()
         }
         const task = await TaskService.Create(new_task)
 
@@ -59,51 +61,51 @@ exports.Create = async function (req, res) {
         return res.status(500).json({
             statusCode: 500,
             data: err
-          })
+        })
     }
 
 }
-exports.Update = async function (req, res) { 
+exports.Update = async function (req, res) {
     try {
-        const { title, description,complete } = req.body;
+        const { title, description, complete } = req.body;
         const { user_id } = req.user;
         const task_id = req.params.id;
 
         const update_task = {}
-        if(title) Object.assign(update_task, { title: title })
-        if(description) Object.assign(update_task, { description: description })
-        if(complete != null) Object.assign(update_task, { complete: complete })
+        if (title) Object.assign(update_task, { title: title })
+        if (description) Object.assign(update_task, { description: description })
+        if (complete != null) Object.assign(update_task, { complete: complete })
         Object.assign(update_task, { updatedAt: new Date() })
 
-        
-        const task = await TaskService.Update(user_id,task_id,update_task)
 
-        if(!task) return res.status(404).json({
+        const task = await TaskService.Update(user_id, task_id, update_task)
+
+        if (!task) return res.status(404).json({
             statusCode: 404,
             message: 'Document not found'
-          })
+        })
 
         return res.status(200).json(task);
-        
+
     } catch (err) {
         console.log(err);
         return res.status(500).json({
             statusCode: 500,
             data: err
-          })
+        })
     }
 }
-exports.Delete = async function (req, res) { 
+exports.Delete = async function (req, res) {
 
     try {
         const { user_id } = req.user;
         const task_id = req.params.id;
-        const task = await TaskService.Delete(user_id,task_id)
+        const task = await TaskService.Delete(user_id, task_id)
 
-        if(!task) return res.status(404).json({
+        if (!task) return res.status(404).json({
             statusCode: 404,
             message: 'Document not found'
-          })
+        })
 
         return res.status(204).send();
 
@@ -112,6 +114,6 @@ exports.Delete = async function (req, res) {
         return res.status(500).json({
             statusCode: 500,
             data: err
-          })
+        })
     }
 }

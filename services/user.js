@@ -21,6 +21,8 @@ exports.create_user = async function (first_name, last_name, email, password) {
         last_name: capitalize(last_name),
         email: email.toLowerCase(), // sanitize: convert email to lowercase
         password,
+        createdAt: new Date(),
+        updatedAt: new Date()
     });
 
     return new Object({
